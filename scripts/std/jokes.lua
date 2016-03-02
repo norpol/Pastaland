@@ -3,7 +3,7 @@
   The jokes module introduces the following:
   -- sends random jokes to the client 
   
-  TODO: see if it's worth encapsulating the stats data in the ci.extra field, instead of a dedicated table 
+  TODO: add more jokes
 
 ]]--
 
