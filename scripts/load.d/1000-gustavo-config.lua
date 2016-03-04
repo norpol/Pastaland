@@ -38,7 +38,7 @@ cs.adduser("Benz", "gustavo", "+39d60464f037ec70f11163b3e9e2d5f8b03f8bb1c2423b8c
 cs.adduser("pisto", "gustavo", "-f16c266e93ef6e4882dd865e56cc3f7d3d84d9b4887e01b7", "m")
 cs.adduser("Swatllama", "gustavo", "-b7a19f6996775d3524d6e4c17f85274c925dd0f8cbe9baae", "m")
 cs.adduser("Bourbon", "gustavo", "-ceb7be8552da06683cb117c585e4bc255b4ca05385646321", "m")
-cs.adduser("Jumper", "gustavo", "+f7e29d9c5e91fb53d2c19927c3ccae6869055cc5543f31d1", "m")
+cs.adduser("Dai", "gustavo", "+f7e29d9c5e91fb53d2c19927c3ccae6869055cc5543f31d1", "m")
 cs.adduser("Zver", "gustavo", "-b89f2161ffe5d9787e465db4cf21801c192334400dd93292", "m")
 cs.adduser("Duke", "gustavo", "+694670498667548b315c450aaa0fb7a24c1306c5f16bd010", "m")
 
