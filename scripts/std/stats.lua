@@ -27,11 +27,12 @@ commands.add("stats", function(info)
   local frags = who.state.frags
   local tk = who.state.teamkills
   local deaths = who.state.deaths
+  local kpd = frags/deaths
   
   local str = "Stats for %s (cn %d):\n"
-  str = str .. "Accuracy: %.1f%%, Frags: %d, Deaths: %d, Teamkills: %d"
+  str = str .. "Accuracy: %.1f%%, Frags: %d, Deaths: %d, Teamkills: %d, KpD: %.1f"
   
-  playermsg(str:format(who.name, cn, acc, frags, deaths, tk), info.ci)
+  playermsg(str:format(who.name, cn, acc, frags, deaths, tk, kpd), info.ci)
   engine.writelog(("stats %d(%s) from %s"):format(cn, who.name, info.ci.name))
 end, "#stats <cn>: shows current stats for player <cn>")
 
@@ -48,7 +49,7 @@ function Player.create(cn)
     guns = {}  -- stats for each weapon
   }, Player)
 
-  for i = 0, 6 do
+  for i = 0, 6 do   --initialize each weapon
     player.guns[i] = {}
     player.guns[i].shotCount = 0
     player.guns[i].damage = 0
@@ -175,6 +176,12 @@ local function printStats()
     local pl = playerStats:getPlayer(ci.clientnum)
     return pl.totalShots > 6 and (pl.totalDamage / (math.max(pl.totalShots, 1))) or 0
   end)
+
+  --calculate the kpd
+  getRankOf("kpd", "\f1KpD:\f2 %s(\f0%.1f\f2), ", function(ci)
+    local pl = playerStats:getPlayer(ci.clientnum)
+    return ci.state.frags / ci.state.deaths
+  end)
   
   --calculate the passes for each player
   getRankOf("passes", "\f1Rugby champ:\f2 %s(\f0%d passes\f2), ", function(ci)
@@ -220,4 +227,4 @@ spaghetti.addhook("intermission", function()
 end)
 
 -- Let's make the intermission a little bit longer, so users can enjoy the stats 
-spaghetti.addhook("intermission", L"server.interm = server.interm + 2500")
+spaghetti.addhook("intermission", L"server.interm = server.interm + 3000")
