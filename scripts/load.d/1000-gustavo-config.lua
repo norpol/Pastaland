@@ -16,7 +16,7 @@ local fp, L = require"utils.fp", require"utils.lambda"
 local map, I = fp.map, fp.I
 local abuse, playermsg = require"std.abuse", require"std.playermsg"
 
-cs.maxclients = 42
+cs.maxclients = 32
 cs.serverport = 28785
 spaghetti.later(10000, L'engine.requestmaster("\\n")', true)
 spaghetti.addhook("masterin", L'if _.input:match("^failreg") then engine.lastupdatemaster = 0 end', true)
@@ -40,7 +40,7 @@ cs.adduser("Swatllama", "gustavo", "-b7a19f6996775d3524d6e4c17f85274c925dd0f8cbe
 cs.adduser("Bourbon", "gustavo", "-ceb7be8552da06683cb117c585e4bc255b4ca05385646321", "m")
 cs.adduser("Jumper", "gustavo", "+f7e29d9c5e91fb53d2c19927c3ccae6869055cc5543f31d1", "m")
 cs.adduser("Zver", "gustavo", "-b89f2161ffe5d9787e465db4cf21801c192334400dd93292", "m")
-cs.adduser("Nooby", "gustavo", "+58e664038fd65dcaf979df83dbe432c950433566196af425", "m")
+cs.adduser("Duke", "gustavo", "+694670498667548b315c450aaa0fb7a24c1306c5f16bd010", "m")
 
 table.insert(auth.preauths, "gustavo")
 
