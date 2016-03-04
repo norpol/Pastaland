@@ -36,6 +36,7 @@ commands.add("stats", function(info)
   engine.writelog(("stats %d(%s) from %s"):format(cn, who.name, info.ci.name))
 end, "#stats <cn>: shows current stats for player <cn>")
 
+
 -- A Player Class, to store the stats for a single player
 local Player = {}
 Player.__index = Player
@@ -55,6 +56,21 @@ function Player.create(cn)
     player.guns[i].damage = 0
   end 
   return player
+end
+
+-- Reinitialize all Player fields
+function Player:reset()
+  self.totalDamage = 0
+  self.totalDamage = 0
+  self.totalShots = 0
+  self.passes = 0
+  self.guns = {}
+  
+  for i = 0, 6 do   --reinitialize each weapon
+    self.guns[i] = {}
+    self.guns[i].shotCount = 0
+    self.guns[i].damage = 0
+  end 
 end
 
 function Player:addDamage(gun, damage)
@@ -197,8 +213,8 @@ local function printStats()
   server.sendservmsg(statsString)
 end 
 
-
 -- Hooks
+
 spaghetti.addhook("damaged", function(info)
   playerStats:addDamage(info.actor.clientnum, info.gun, info.damage)
 end)
@@ -206,6 +222,12 @@ end)
 spaghetti.addhook("shot", function(info)
   playerStats:addShot(info.ci.clientnum, info.event.gun)
 end, false)
+
+spaghetti.addhook("connected", function(info)
+  local pl = playerStats:getPlayer(info.ci.clientnum)
+  pl:reset()
+  end
+)
 
 spaghetti.addhook("changemap", function(info)
   -- God bless the garbage collector:
