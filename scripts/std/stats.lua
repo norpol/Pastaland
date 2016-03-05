@@ -27,7 +27,7 @@ commands.add("stats", function(info)
   local frags = who.state.frags
   local tk = who.state.teamkills
   local deaths = who.state.deaths
-  local kpd = frags/deaths
+  local kpd = frags/(math.max(deaths, 1))
   
   local str = "Stats for %s (cn %d):\n"
   str = str .. "Accuracy: %.1f%%, Frags: %d, Deaths: %d, Teamkills: %d, KpD: %.1f"
@@ -60,6 +60,7 @@ end
 
 -- Reinitialize all Player fields
 function Player:reset()
+  
   self.totalDamage = 0
   self.totalDamage = 0
   self.totalShots = 0
@@ -196,7 +197,7 @@ local function printStats()
   --calculate the kpd
   getRankOf("kpd", "\f1KpD:\f2 %s(\f0%.1f\f2), ", function(ci)
     local pl = playerStats:getPlayer(ci.clientnum)
-    return ci.state.frags / ci.state.deaths
+    return ci.state.frags / (math.max(ci.state.deaths, 1))
   end)
   
   --calculate the passes for each player
