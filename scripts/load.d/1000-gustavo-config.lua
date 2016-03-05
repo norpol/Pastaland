@@ -117,6 +117,7 @@ require"std.pm"       -- private messaging module
 require"std.getip"    -- get ip module
 require"std.jokes"    -- jokes module
 require"std.stats"    -- statistics module
+require"std.autospec" -- autospec module
 
 spaghetti.addhook("entsloaded", function()
   if server.smapname ~= "thetowers" then return end
