@@ -241,6 +241,22 @@ spaghetti.addhook("changemap", function(info)
   end)
 end)
 
+spaghetti.addhook("changemap", function(info)
+  -- First quarter through a match, show the current stats 
+  spaghetti.latergame(1000 * 60 * 2.5, function()
+    server.sendservmsg("First quarter match statistics: ")
+    printStats()
+  end)
+end)
+
+spaghetti.addhook("changemap", function(info)
+  -- First quarter through a match, show the current stats 
+  spaghetti.latergame(1000 * 60 * 7.5, function()
+    server.sendservmsg("Third quarter match statistics: ")
+    printStats()
+  end)
+end)
+
 spaghetti.addhook("intermission", function()        
   server.sendservmsg("End match statistics: ")
   printStats()   
