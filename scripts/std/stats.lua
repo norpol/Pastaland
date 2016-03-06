@@ -17,7 +17,7 @@ local L = require("utils.lambda")
 
 commands.add("stats", function(info)
   local cn = tonumber(engine.filtertext(info.args, true, true):match("(%d+)"))
-  if not cn then playermsg("Invalid format.", info.ci) return end
+  if not cn then cn = info.ci.clientnum end
   
   local who = engine.getclientinfo(cn)
   if not who then playermsg("Cannot find cn " .. cn, info.ci) return end
@@ -34,7 +34,7 @@ commands.add("stats", function(info)
   
   playermsg(str:format(who.name, cn, acc, frags, deaths, tk, kpd), info.ci)
   engine.writelog(("stats %d(%s) from %s"):format(cn, who.name, info.ci.name))
-end, "#stats <cn>: shows current stats for player <cn>")
+end, "#stats <cn>: shows current stats for player <cn>. Omit <cn> to see your own stats.")
 
 
 -- A Player Class, to store the stats for a single player
