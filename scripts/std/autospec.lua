@@ -25,6 +25,7 @@ local function updateClientPosition()
     if curVec:dist(oldVec) < DELTA then
       server.forcespectator(ci)
       engine.writelog(("autospec %d(%s)"):format(ci.clientnum, ci.name))
+      server.sendservmsg("Server puts to spec " .. ci.name .. " for inactivity")
     end
     
     ci.extra.curPos = curVec
