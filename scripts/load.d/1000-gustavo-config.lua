@@ -16,7 +16,7 @@ local fp, L = require"utils.fp", require"utils.lambda"
 local map, I = fp.map, fp.I
 local abuse, playermsg = require"std.abuse", require"std.playermsg"
 
-cs.maxclients = 28
+cs.maxclients = 26
 cs.serverport = 28785
 spaghetti.later(10000, L'engine.requestmaster("\\n")', true)
 spaghetti.addhook("masterin", L'if _.input:match("^failreg") then engine.lastupdatemaster = 0 end', true)
@@ -54,27 +54,16 @@ cs.serverdesc = "\f7:: Pastaland ::"
 cs.lockmaprotation = 2
 cs.ctftkpenalty = 0
 cs.maprotationreset()
+
 --copied from data/menus.cfg
-local ffamaps, capturemaps, ctfmaps = table.concat({
-  "aard3c academy akaritori alithia alloy aqueducts arbana bvdm_01 castle_trap collusion complex corruption curvedm curvy_castle darkdeath deathtek depot",
-  "dirtndust DM_BS1 dock douze duel7 duel8 dune elegy fanatic_quake force fragplaza frostbyte frozen fury guacamole gubo hades",
-"hashi hog2 industry injustice island justice kalking1 katrez_d kffa killfactory kmap5 konkuri-to ksauer1 legazzo lostinspace masdm mbt10",
-  "mbt2 mbt9 memento metl2 metl3 metl4 moonlite neondevastation neonpanic nmp8 nucleus oasis oddworld ogrosupply orbe orion osiris",
-  "ot outpost paradigm park pgdm phosgene pitch_black powerplant refuge renegade rm5 roughinery ruby ruine sauerstruck sdm1 shadowed",
-  "shindou shinmei1 shiva simplicity skrdm1 stemple suburb tartech teahupoo tejen thetowers thor torment tumwalk turbine wake5 wdcd"
-}, " "), table.concat({
-  "abbey akroseum alithia arabic asgard asteroids c_egypt c_valley campo capture_night caribbean collusion core_refuge core_transfer corruption cwcastle damnation",
-  "dirtndust donya duomo dust2 eternal_valley evilness face-capture fb_capture fc3 fc4 fc5 forge frostbyte hades hallo haste hidden",
-  "infamy killcore3 kopenhagen lostinspace mbt12 mercury monastery nevil_c nitro nmp4 nmp8 nmp9 nucleus ogrosupply paradigm ph-capture reissen",
-  "relic river_c serenity snapper_rocks spcr subterra suburb tempest tortuga turbulence twinforts urban_c valhalla venice xenon"
-}, " "), table.concat({
+local ctfmaps = table.concat({
   "abbey akroseum arbana asgard authentic autumn bad_moon berlin_wall bt_falls campo capture_night catch22 core_refuge core_transfer damnation desecration dust2",
   "eternal_valley europium evilness face-capture flagstone forge forgotten garden hallo haste hidden infamy kopenhagen l_ctf mach2 mbt1 mbt12",
   "mbt4 mercury mill nitro nucleus recovery redemption reissen sacrifice shipwreck siberia snapper_rocks spcr subterra suburb tejen tempest",
   "tortuga turbulence twinforts urban_c valhalla wdcd xenon fc4 fc5 gubo donya duomo"
 }, " ")
-
-ffamaps, capturemaps, ctfmaps = map.uv(function(maps)
+ 
+ctfmaps = map.uv(function(maps)
   local t = map.f(I, maps:gmatch("[^ ]+"))
   for i = 2, #t do
     local j = math.random(i)
@@ -83,13 +72,12 @@ ffamaps, capturemaps, ctfmaps = map.uv(function(maps)
     t[i] = s
   end
   return table.concat(t, " ")
-end, ffamaps, capturemaps, ctfmaps)
+end, ctfmaps)
 
-cs.maprotation("ffa effic tac teamplay efficteam tacteam", ffamaps, "regencapture capture hold effichold instahold", capturemaps, "ctf efficctf instactf protect efficprotect instaprotect", ctfmaps)
+cs.maprotation("instactf", ctfmaps)
 server.mastermask = server.MM_PUBSERV + server.MM_AUTOAPPROVE
 
 --gamemods
---require"gamemods.quadarmour".on(1/2, 6, 0, 20000, 30000, server.A_GREEN, 100)
 spaghetti.addhook("changemap", L'require"gamemods.rugby".on(server.m_ctf)')
 
 local commands = require"std.commands"
@@ -131,7 +119,6 @@ spaghetti.addhook("entsloaded", function()
 end)
 
 --moderation
-
 cs.teamkillkick("*", 5, 30)     -- keep autokick quite low
 
 --limit reconnects when banned, or to avoid spawn wait time
