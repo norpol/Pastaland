@@ -17,7 +17,7 @@ local L = require("utils.lambda")
 
 commands.add("stats", function(info)
   local cn = tonumber(engine.filtertext(info.args, true, true):match("(%d+)"))
-  if not cn then playermsg("Invalid format.", info.ci) return end
+  if not cn then cn = info.ci.clientnum end
   
   local who = engine.getclientinfo(cn)
   if not who then playermsg("Cannot find cn " .. cn, info.ci) return end
@@ -27,13 +27,15 @@ commands.add("stats", function(info)
   local frags = who.state.frags
   local tk = who.state.teamkills
   local deaths = who.state.deaths
+  local kpd = frags/(math.max(deaths, 1))
   
   local str = "Stats for %s (cn %d):\n"
-  str = str .. "Accuracy: %.1f%%, Frags: %d, Deaths: %d, Teamkills: %d"
+  str = str .. "Accuracy: %.1f%%, Frags: %d, Deaths: %d, Teamkills: %d, KpD: %.1f"
   
-  playermsg(str:format(who.name, cn, acc, frags, deaths, tk), info.ci)
+  playermsg(str:format(who.name, cn, acc, frags, deaths, tk, kpd), info.ci)
   engine.writelog(("stats %d(%s) from %s"):format(cn, who.name, info.ci.name))
-end, "#stats <cn>: shows current stats for player <cn>")
+end, "#stats <cn>: shows current stats for player <cn>. Omit <cn> to see your own stats.")
+
 
 -- A Player Class, to store the stats for a single player
 local Player = {}
@@ -48,12 +50,28 @@ function Player.create(cn)
     guns = {}  -- stats for each weapon
   }, Player)
 
-  for i = 0, 6 do
+  for i = 0, 6 do   --initialize each weapon
     player.guns[i] = {}
     player.guns[i].shotCount = 0
     player.guns[i].damage = 0
   end 
   return player
+end
+
+-- Reinitialize all Player fields
+function Player:reset()
+  
+  self.totalDamage = 0
+  self.totalDamage = 0
+  self.totalShots = 0
+  self.passes = 0
+  self.guns = {}
+  
+  for i = 0, 6 do   --reinitialize each weapon
+    self.guns[i] = {}
+    self.guns[i].shotCount = 0
+    self.guns[i].damage = 0
+  end 
 end
 
 function Player:addDamage(gun, damage)
@@ -175,6 +193,12 @@ local function printStats()
     local pl = playerStats:getPlayer(ci.clientnum)
     return pl.totalShots > 6 and (pl.totalDamage / (math.max(pl.totalShots, 1))) or 0
   end)
+
+  --calculate the kpd
+  getRankOf("kpd", "\f1KpD:\f2 %s(\f0%.1f\f2), ", function(ci)
+    local pl = playerStats:getPlayer(ci.clientnum)
+    return ci.state.frags / (math.max(ci.state.deaths, 1))
+  end)
   
   --calculate the passes for each player
   getRankOf("passes", "\f1Rugby champ:\f2 %s(\f0%d passes\f2), ", function(ci)
@@ -190,8 +214,8 @@ local function printStats()
   server.sendservmsg(statsString)
 end 
 
-
 -- Hooks
+
 spaghetti.addhook("damaged", function(info)
   playerStats:addDamage(info.actor.clientnum, info.gun, info.damage)
 end)
@@ -200,6 +224,12 @@ spaghetti.addhook("shot", function(info)
   playerStats:addShot(info.ci.clientnum, info.event.gun)
 end, false)
 
+spaghetti.addhook("connected", function(info)
+  local pl = playerStats:getPlayer(info.ci.clientnum)
+  pl:reset()
+  end
+)
+
 spaghetti.addhook("changemap", function(info)
   -- God bless the garbage collector:
   playerStats = PlayerStats.init() --reinitialize the players stats
@@ -207,6 +237,22 @@ spaghetti.addhook("changemap", function(info)
   -- Halfway through a match, show the current stats 
   spaghetti.latergame(1000 * 60 * 5, function()
     server.sendservmsg("Mid match statistics: ")
+    printStats()
+  end)
+end)
+
+spaghetti.addhook("changemap", function(info)
+  -- First quarter through a match, show the current stats 
+  spaghetti.latergame(1000 * 60 * 2.5, function()
+    server.sendservmsg("First quarter match statistics: ")
+    printStats()
+  end)
+end)
+
+spaghetti.addhook("changemap", function(info)
+  -- First quarter through a match, show the current stats 
+  spaghetti.latergame(1000 * 60 * 7.5, function()
+    server.sendservmsg("Third quarter match statistics: ")
     printStats()
   end)
 end)
@@ -220,4 +266,4 @@ spaghetti.addhook("intermission", function()
 end)
 
 -- Let's make the intermission a little bit longer, so users can enjoy the stats 
-spaghetti.addhook("intermission", L"server.interm = server.interm + 2500")
+spaghetti.addhook("intermission", L"server.interm = server.interm + 3000")
