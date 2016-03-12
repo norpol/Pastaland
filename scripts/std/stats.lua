@@ -111,10 +111,9 @@ function PlayerStats.init()
       players = setmetatable({}, {
         -- automatically create player if not made yet
         __index = function(t,k)
-          if players_local[k] then
-            return players_local[k]
+          if not players_local[k] then
+            players_local[k] = Player.create(cn)
           end
-          players_local[k] = Player.create(cn)
           return players_local[k]
         end
       })
