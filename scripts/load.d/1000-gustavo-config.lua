@@ -44,6 +44,8 @@ cs.adduser("Duke", "gustavo", "+694670498667548b315c450aaa0fb7a24c1306c5f16bd010
 cs.adduser("Tuta", "gustavo", "-43599891e272d0886d0ca4a7a7414044f3809d817b9c4771", "m")
 cs.adduser("Renard", "gustavo", "+7af8f62f9f609e8716b97e74b51ff03a067569aaefa608c9", "m")
 cs.adduser("NoobInRage", "gustavo", "-50064a2629d1066ff8edb91c123fe0dbe5dfacd307cf98de", "m")
+cs.adduser("Hamon", "gustavo", "+b2f1ccd8d948924d8347943e806a180511ca9c046cc106c4", "m")
+cs.adduser("Tamin0", "gustavo", "-e90fabcea01534491b27d03f06e96577b3ac2e4ca477a33a", "m")
 
 table.insert(auth.preauths, "gustavo")
 
