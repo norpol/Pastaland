@@ -46,6 +46,7 @@ cs.adduser("Renard", "gustavo", "+7af8f62f9f609e8716b97e74b51ff03a067569aaefa608
 cs.adduser("NoobInRage", "gustavo", "-50064a2629d1066ff8edb91c123fe0dbe5dfacd307cf98de", "m")
 cs.adduser("Hamon", "gustavo", "+b2f1ccd8d948924d8347943e806a180511ca9c046cc106c4", "m")
 cs.adduser("Tamin0", "gustavo", "-e90fabcea01534491b27d03f06e96577b3ac2e4ca477a33a", "m")
+cs.adduser("Nix", "gustavo", "+44891d2d609a3a0886e3caf1d419304eb25f34db066cea12", "m")
 
 table.insert(auth.preauths, "gustavo")
 
@@ -190,7 +191,7 @@ spaghetti.addhook(server.N_TEXT, function(info)
   local tellcheatcmd = info.ci.extra.tellcheatcmd or tb(1/30000, 1)
   info.ci.extra.tellcheatcmd = tellcheatcmd
   if not tellcheatcmd() then return end
-  playermsg("\f2Problems with a cheater? You are doomed.", info.ci)
+  playermsg("\f2Problems with a cheater? Use Irc: #sauercom", info.ci)
   sound(info.ci, server.S_HIT, true) sound(info.ci, server.S_HIT, true)
 end)
 
