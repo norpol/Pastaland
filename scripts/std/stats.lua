@@ -5,6 +5,9 @@
   - pretty formatted statistics at the end of the match
   - pretty formatted statistics the middle of the match
   
+  When used, the stats module generates the global variable playerStats, which holds
+  the statistics for the current players. 
+  
   TODO: see if it's worth encapsulating the stats data in the ci.extra field, instead of a dedicated table 
 
 ]]--
@@ -261,7 +264,7 @@ spaghetti.addhook("intermission", function()
   printStats()   
     
   -- God bless the garbage collector:
-  playerStats = PlayerStats.init() --reinitialize the players stats
+  -- playerStats = PlayerStats.init() --reinitialize the players stats
 end)
 
 -- Let's make the intermission a little bit longer, so users can enjoy the stats 

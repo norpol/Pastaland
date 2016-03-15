@@ -24,38 +24,21 @@ spaghetti.addhook("masterin", L'if _.input:match("^failreg") then engine.lastupd
 --make sure you delete the next two lines, or I'll have admin on your server.
 cs.serverauth = "gustavo"
 local auth = require"std.auth"
+
+-- need at least an admin to edit keys using the authloader module
 cs.adduser("GustavoLapasta", "gustavo", "+0f4edc6a81315c60974f532ddda9bbcf410a47559ffdd233", "a")
-cs.adduser("Shag", "gustavo", "-4751bf9630525b622053c10d69690860544dc877265250bc", "m")
-cs.adduser("Eric", "gustavo", "+e676b6d2ddc76fcfff37119d4baa948a69a5996a832ce889", "m")
-cs.adduser("Pikachu", "gustavo", "+472f6febce5a00b0fa19954f98f01606c3c7f67f9ef71244", "m")
-cs.adduser("Obstriegel", "gustavo", "-7b4bcc7bf148a3f9891c7a1fd1d70e8fd03d8c3d980791bc", "m")
-cs.adduser("Star", "gustavo", "+de96f3e0ba5bcb692c86cbb06a695fc3db60debc59ec8355", "m")
-cs.adduser("Fear", "gustavo", "+bf1fa38e7439791d9ff52635575e6a002fdfd532d07d5565", "m")
-cs.adduser("a-monster", "gustavo", "-a5a2ba763973d5af0cd90bb46a663712376e855681672864", "m")
-cs.adduser("Narwhaal", "gustavo", "-f14e1ba9db58e791f5a65ed8443cc28e507572903f0ef5d1", "m")
-cs.adduser("Cs4", "gustavo", "+b7fbb3b4227c69eeda4c6aa328fffd75a0717316a4dedb7f", "m")
-cs.adduser("Benz", "gustavo", "+39d60464f037ec70f11163b3e9e2d5f8b03f8bb1c2423b8c", "m")
-cs.adduser("pisto", "gustavo", "-f16c266e93ef6e4882dd865e56cc3f7d3d84d9b4887e01b7", "m")
-cs.adduser("Swatllama", "gustavo", "-b7a19f6996775d3524d6e4c17f85274c925dd0f8cbe9baae", "m")
-cs.adduser("Bourbon", "gustavo", "-ceb7be8552da06683cb117c585e4bc255b4ca05385646321", "m")
-cs.adduser("Dai", "gustavo", "+f7e29d9c5e91fb53d2c19927c3ccae6869055cc5543f31d1", "m")
-cs.adduser("Zver", "gustavo", "-b89f2161ffe5d9787e465db4cf21801c192334400dd93292", "m")
-cs.adduser("Duke", "gustavo", "+694670498667548b315c450aaa0fb7a24c1306c5f16bd010", "m")
-cs.adduser("Tuta", "gustavo", "-43599891e272d0886d0ca4a7a7414044f3809d817b9c4771", "m")
-cs.adduser("Renard", "gustavo", "+7af8f62f9f609e8716b97e74b51ff03a067569aaefa608c9", "m")
-cs.adduser("NoobInRage", "gustavo", "-50064a2629d1066ff8edb91c123fe0dbe5dfacd307cf98de", "m")
-cs.adduser("Hamon", "gustavo", "+b2f1ccd8d948924d8347943e806a180511ca9c046cc106c4", "m")
-cs.adduser("Tamin0", "gustavo", "-e90fabcea01534491b27d03f06e96577b3ac2e4ca477a33a", "m")
-cs.adduser("Nix", "gustavo", "+44891d2d609a3a0886e3caf1d419304eb25f34db066cea12", "m")
 
 table.insert(auth.preauths, "gustavo")
+
+local authloader = require"std.authloader"
+authloader.loadAuths()
 
 spaghetti.addhook(server.N_SETMASTER, L"_.skip = _.skip or (_.mn ~= _.ci.clientnum and _.ci.privilege < server.PRIV_AUTH)")
 
 cs.serverdesc = "\f7:: Pastaland ::"
 
 cs.lockmaprotation = 2
-cs.ctftkpenalty = 0
+cs.ctftkpenalty = 1 -- teamkillers can't take the flag from flagholder 
 cs.maprotationreset()
 
 --copied from data/menus.cfg
@@ -112,6 +95,7 @@ require"std.getip"    -- get ip module
 require"std.jokes"    -- jokes module
 require"std.stats"    -- statistics module
 require"std.autospec" -- autospec module
+--require"std.settime"  -- USE ONLY DURING TESTING
 
 spaghetti.addhook("entsloaded", function()
   if server.smapname ~= "thetowers" then return end
