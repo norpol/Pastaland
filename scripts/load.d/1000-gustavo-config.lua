@@ -16,7 +16,7 @@ local fp, L = require"utils.fp", require"utils.lambda"
 local map, I = fp.map, fp.I
 local abuse, playermsg = require"std.abuse", require"std.playermsg"
 
-cs.maxclients = 26
+cs.maxclients = 30    -- with autospec we can afford a generous number here 
 cs.serverport = 28785
 spaghetti.later(10000, L'engine.requestmaster("\\n")', true)
 spaghetti.addhook("masterin", L'if _.input:match("^failreg") then engine.lastupdatemaster = 0 end', true)
