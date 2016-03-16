@@ -113,4 +113,14 @@
     "domain":"gustavo",
     "pubkey":"+44891d2d609a3a0886e3caf1d419304eb25f34db066cea12",
     "privilege":"m"
+  },{
+    "user":"Cubelibre",
+    "privilege":"m",
+    "pubkey":"+638e4431e153edd6f6687e9d245217b46ce394672240b1f8",
+    "domain":"gustavo"
+  },{
+    "user":"C_Classic",
+    "domain":"gustavo",
+    "pubkey":"-a449d540cf1c6240700877e7f80bd9b9af9d096d0f82a66f",
+    "privilege":"m"
   }]
