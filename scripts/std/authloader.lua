@@ -32,12 +32,12 @@ Module.addkey = function(user, domain, pubkey, privilege)
   engine.writelog("Added auth key for user " .. user)
 end 
 
-commands.add("load", function(info)
+commands.add("keysreload", function(info)
   if info.ci.privilege < server.PRIV_AUTH then return playermsg("Insufficient privilege.", info.ci) end
   Module.loadAuths()
 end)
   
-commands.add("addkey", function(info)
+commands.add("keyadd", function(info)
   if info.ci.privilege < server.PRIV_AUTH then return playermsg("Insufficient privilege.", info.ci) end
   local argstable = {}
   for arg in string.gmatch(info.args, "%S+") do
@@ -46,6 +46,6 @@ commands.add("addkey", function(info)
   if #argstable ~= 4 then return playermsg("Wrong parameters number.", info.ci) end
   --TODO: sanitize parameters
   Module.addkey(argstable[1],argstable[2],argstable[3], argstable[4])
-end, "#addkey [user] [domain] [pubkey] [privilege]: add a key to the auths table")
+end, "#keyadd [user] [domain] [pubkey] [privilege]: add a key to the auths table")
 
 return Module
