@@ -95,6 +95,7 @@ require"std.getip"    -- get ip module
 require"std.jokes"    -- jokes module
 require"std.stats"    -- statistics module
 require"std.autospec" -- autospec module
+require"std.db"       -- Pastalandjs module
 --require"std.settime"  -- USE ONLY DURING TESTING
 
 spaghetti.addhook("entsloaded", function()

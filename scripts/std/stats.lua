@@ -271,7 +271,6 @@ end)
 
 spaghetti.addhook("takeflag", function(info)
   playerStats:addStolen(info.ci.clientnum)
-  print("Flag stolen: " .. info.ci.name)
   end
 )
 

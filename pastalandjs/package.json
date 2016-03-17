@@ -1,0 +1,14 @@
+{
+  "name": "pastalandjs",
+  "version": "1.0.0",
+  "description": "A framework to store Pastaland server data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "GustavoLapasta",
+  "license": "Zlib",
+  "dependencies": {
+    "sqlite3": "^3.1.1"
+  }
+}
