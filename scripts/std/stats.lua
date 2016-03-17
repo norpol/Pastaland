@@ -31,11 +31,12 @@ commands.add("stats", function(info)
   local tk = who.state.teamkills
   local deaths = who.state.deaths
   local kpd = frags/(math.max(deaths, 1))
+  local stolen = pl.stolen
   
   local str = "Stats for %s (cn %d):\n"
-  str = str .. "Accuracy: %.1f%%, Frags: %d, Deaths: %d, Teamkills: %d, KpD: %.1f"
+  str = str .. "Accuracy: %.1f%%, Frags: %d, Deaths: %d, Teamkills: %d, KpD: %.1f, Stolen: %d"
   
-  playermsg(str:format(who.name, cn, acc, frags, deaths, tk, kpd), info.ci)
+  playermsg(str:format(who.name, cn, acc, frags, deaths, tk, kpd, stolen), info.ci)
   engine.writelog(("stats %d(%s) from %s"):format(cn, who.name, info.ci.name))
 end, "#stats <cn>: shows current stats for player <cn>. Omit <cn> to see your own stats.")
 
@@ -50,6 +51,7 @@ function Player.create(cn)
     totalDamage = 0,
     totalShots = 0,
     passes = 0,   --rugby passes
+    stolen = 0,  -- flags stolen
     guns = {}  -- stats for each weapon
   }, Player)
 
@@ -65,9 +67,9 @@ end
 function Player:reset()
   
   self.totalDamage = 0
-  self.totalDamage = 0
   self.totalShots = 0
   self.passes = 0
+  self.stolen = 0
   self.guns = {}
   
   for i = 0, 6 do   --reinitialize each weapon
@@ -105,6 +107,10 @@ function Player:addPass()
   self.passes = self.passes + 1
 end
 
+function Player:addStolen()
+  self.stolen = self.stolen + 1
+end
+
 local PlayerStats = {}
 PlayerStats.__index = PlayerStats
 
@@ -137,6 +143,10 @@ end
 
 function PlayerStats:addPass(cn)
   self.players[cn]:addPass()
+end
+
+function PlayerStats:addStolen(cn)
+  self.players[cn]:addStolen()
 end
 
 --Returns Player <cn> or a dummy empty Player object.
@@ -258,6 +268,12 @@ spaghetti.addhook("changemap", function(info)
     printStats()
   end)
 end)
+
+spaghetti.addhook("takeflag", function(info)
+  playerStats:addStolen(info.ci.clientnum)
+  print("Flag stolen: " .. info.ci.name)
+  end
+)
 
 spaghetti.addhook("intermission", function()        
   server.sendservmsg("End match statistics: ")

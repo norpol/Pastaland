@@ -4,7 +4,7 @@
 
 ]]--
 
-if not os.getenv("GUSTAVOVPS") then return end
+if not os.getenv("GST") then return end     -- the shorter the better 
 engine.writelog("Applying the Pastaland configuration.")
 
 local servertag = require"utils.servertag"
