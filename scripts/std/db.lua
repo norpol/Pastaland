@@ -9,6 +9,7 @@
 local ip = require ("utils.ip")
 local json = require ("dkjson")
 local iterators = require("std.iterators");
+local jsonpersist = require("utils.jsonpersist")
 
 if not playerStats then
   require("stats")
@@ -82,7 +83,7 @@ local function registerStats()
           stolen = pl.stolen
         }   
     
-        local str = json.encode(tbl, {indent = false})
+        local str = json.encode(jsonpersist.deepencodeutf8(tbl), {indent = false})
         sendDbMessage(str)
       end
     end
@@ -96,7 +97,7 @@ spaghetti.addhook("connected", function(info)
     name = info.ci.name,
     ip = tostring(ip.ip(info.ci))
   }
-  local str = json.encode(tbl, {indent = false})
+  local str = json.encode(jsonpersist.deepencodeutf8(tbl), {indent = false})
   if(tbl.name ~= "unnamed") then 
     sendDbMessage(str)
   end
@@ -111,7 +112,7 @@ end)
 spaghetti.later(50, function()
   local datagram = udp:receive()  -- maximum allowed datagram size is 8192 bytes.
   if datagram then
-    local obj, pos, err = json.decode(datagram, 1, nil)
+    local obj, pos, err = json.decode( jsonpersist.deepdecodeutf8(datagram), 1, nil)
     if err then return print("Error: ", err)
     else
       if obj.command == "user description" then
