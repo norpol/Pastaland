@@ -3,13 +3,15 @@
   The db introduces a database connection with the Nodejs server.
   It requires the stats module.
   
-  TODO: all 
+  Introduces the #names <cn|ip> command to get the names related to an IP address
 
 ]]--
 local ip = require ("utils.ip")
 local json = require ("dkjson")
 local iterators = require("std.iterators");
 local jsonpersist = require("utils.jsonpersist")
+local commands = require("std.commands");
+local playermsg = require("std.playermsg");
 
 if not playerStats then
   require("stats")
@@ -90,6 +92,30 @@ local function registerStats()
   end
 end
 
+commands.add("names", function(info)
+  if info.ci.privilege < server.PRIV_AUTH then return playermsg("Insufficient privilege.", info.ci) end
+  if info.args=="" then playermsg("Call #names <cn> or #names <ip>", info.ci.clientnum) end
+  
+  local tbl = {
+      command = "get names",
+      sender = info.ci.clientnum,
+  }
+  
+  local cn = tonumber(info.args)
+  if not cn then -- no cn, we assume the argument string is an ip
+    tbl.ip = info.args
+  else  -- a cn was found, let's get its ip
+    local client = engine.getclientinfo(cn)
+    if not client then return playermsg("Player not found", info.ci.clientnum) end
+    local cnip = ip.ip(client)
+    if not cnip then return playermsg("Player not found", info.ci.clientnum) end
+    tbl.ip = tostring(cnip)
+  end
+  local str = json.encode(jsonpersist.deepencodeutf8(tbl), {indent = false})
+  sendDbMessage(str) 
+end, "#names <cn|ip>, get all names related to a specific ip address" 
+)
+
 -- When a player connects, send a notification to the database server
 spaghetti.addhook("connected", function(info)
   local tbl = {
@@ -120,10 +146,14 @@ spaghetti.later(50, function()
         local acc = obj.damage / (math.max(obj.shots, 1))
         local str = "\f2%s\f1:  Rank \f0#%d\f1, Average acc \f0%.1f%%\f1, Average KpD: \f0%.1f\f1" 
         server.sendservmsg(str:format(obj.name, obj.rank, acc, kpd))
+      else if obj.command == "get names" then
+        local str = "Names from same ip: " .. table.concat(obj.names, " ")
+        playermsg(str, obj.sender)
       else
         print("Unknown server request");
       end
     end
+  end
   end
 end, true)
 

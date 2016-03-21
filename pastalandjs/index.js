@@ -28,6 +28,9 @@ server.on('message', (msg, rinfo) => {
     case "connected":
       onConnection(request, rinfo);
       break;
+    case "get names":
+      onGetNames(request, rinfo);
+      break;
     default:
       console.log("You did something horribly wrong.");
   }
@@ -66,7 +69,7 @@ function createTables() {
     "name TEXT, " +
     "ip TEXT, " + 
     "clock DATETIME);"; 
-    //"FOREIGN KEY (name) REFERENCES players(name) );"
+    //"FOREIGN KEY (name) REFERENCES players(name) );" //let's not enforce foreign keys
     db.run(connectionsTable/*, insertRows*/);
 }
 
@@ -153,7 +156,6 @@ function onConnection(request, rinfo) {
           var str = JSON.stringify(rows[0])
           var message = new Buffer(str);
           server.send(message, 0, message.length, rinfo.port, rinfo.address, (err)=> {
-          //console.log("Trying to reply...");
             if(err) console.log("Error sending message back to spaghettimod");
           });
         });
@@ -165,6 +167,51 @@ function onConnection(request, rinfo) {
       if (err) {
         console.log("ERROR: " + err);
         return;
+      }
+    });
+}
+
+/**
+ * When the server receives a "get names" command
+ * request.sender = name of the user doing the request
+ * request.ip = ip for which we want the names
+ */
+function onGetNames(request, rinfo) {
+    var sender = request.sender;
+    var ip = request.ip;
+    
+    db.all("SELECT DISTINCT name, ip FROM ips WHERE ip like ? ", ip, function(err, rows){
+      if (err) {
+        console.log("ERROR: " + err);
+        return;
+      }
+      if(rows.length == 0){  // not found
+        console.log("No names found.");
+        var response = {};
+        response.command = "get names";
+        response.sender = request.sender
+        response.names = ["no names found."]
+        var str = JSON.stringify(response)
+        console.log("Response: " + str)
+        var message = new Buffer(str);
+        server.send(message, 0, message.length, rinfo.port, rinfo.address, (err)=> {
+          if(err) console.log("Error sending message back to spaghettimod");
+        });
+      } else { // found, let's return the data to Spaghettimod
+       
+        var response = {};
+        response.names = []
+        for (var i=0; i<rows.length; i++) {
+            response.names.push(rows[i].name)
+        }
+        
+        response.command = "get names";
+        response.sender = request.sender
+        var str = JSON.stringify(response)
+        var message = new Buffer(str);
+        server.send(message, 0, message.length, rinfo.port, rinfo.address, (err)=> {
+          if(err) console.log("Error sending message back to spaghettimod");
+        });
       }
     });
 }
