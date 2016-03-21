@@ -88,6 +88,17 @@ spaghetti.addhook("entsloaded", function()
   currentflagswitch = true
 end)
 
+commands.add("maxclients", function(info)
+  if info.ci.privilege < server.PRIV_ADMIN then return playermsg("Insufficient privilege to get IPs.", info.ci) end
+  if not info.args then return playermsg("Invalid maxclients value", info.ci) end
+  local n = tonumber(info.args)
+  if not n then return playermsg("Invalid maxclients value", info.ci) end
+  cs.maxclients = n
+  playermsg("Maxclients set to " .. tostring(n), info.ci)
+  end, "#maxclients <n>, change the maximum number of allowed clients"
+)
+  
+
 local ents = require"std.ents", require"std.maploaded"
 
 require"std.pm"       -- private messaging module
