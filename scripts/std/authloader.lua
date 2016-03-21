@@ -33,12 +33,12 @@ Module.addkey = function(user, domain, pubkey, privilege)
 end 
 
 commands.add("keysreload", function(info)
-  if info.ci.privilege < server.PRIV_AUTH then return playermsg("Insufficient privilege.", info.ci) end
+  if info.ci.privilege < server.PRIV_ADMIN then return playermsg("Insufficient privilege.", info.ci) end
   Module.loadAuths()
 end)
   
 commands.add("keyadd", function(info)
-  if info.ci.privilege < server.PRIV_AUTH then return playermsg("Insufficient privilege.", info.ci) end
+  if info.ci.privilege < server.PRIV_ADMIN then return playermsg("Insufficient privilege.", info.ci) end
   local argstable = {}
   for arg in string.gmatch(info.args, "%S+") do
     table.insert(argstable, arg);
