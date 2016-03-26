@@ -116,6 +116,24 @@ commands.add("names", function(info)
 end, "#names <cn|ip>, get all names related to a specific ip address" 
 )
 
+commands.add("rank", function(info)
+  local cn = tonumber(info.args)
+  if not cn then cn = info.ci.clientnum end -- no cn passed, use self
+  
+  local who = engine.getclientinfo(cn)
+  if not who then playermsg("Cannot find cn " .. cn, info.ci) return end
+  
+  local tbl = {
+      command = "get rank",
+      sender = info.ci.clientnum,
+      name = who.name
+  }
+
+  local str = json.encode(jsonpersist.deepencodeutf8(tbl), {indent = false})
+  sendDbMessage(str) 
+end, "#rank <cn>, get rank of user. Omit <cn> to see your own rank." 
+)
+
 -- When a player connects, send a notification to the database server
 spaghetti.addhook("connected", function(info)
   local tbl = {
@@ -146,14 +164,18 @@ spaghetti.later(50, function()
         local acc = obj.damage / (math.max(obj.shots, 1))
         local str = "\f2%s\f1:  Rank \f0#%d\f1, Average acc \f0%.1f%%\f1, Average KpD: \f0%.1f\f1" 
         server.sendservmsg(str:format(obj.name, obj.rank, acc, kpd))
-      else if obj.command == "get names" then
+      elseif obj.command == "get names" then
         local str = "Names from same ip: " .. table.concat(obj.names, " ")
         playermsg(str, obj.sender)
+      elseif obj.command == "get rank" then
+        local kpd = obj.frags/(math.max(obj.deaths, 1))
+        local acc = obj.damage / (math.max(obj.shots, 1))
+        local str = "\f2%s\f1:  Rank \f0#%d\f1, Average acc \f0%.1f%%\f1, Average KpD: \f0%.1f\f1"
+        playermsg(str:format(obj.name, obj.rank, acc, kpd), obj.sender)
       else
         print("Unknown server request");
       end
     end
-  end
   end
 end, true)
 

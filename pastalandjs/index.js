@@ -23,13 +23,16 @@ server.on('message', (msg, rinfo) => {
   switch (request.command) {
     //case
     case "register stats":
-      onRegisterStatus(request)
+      onRegisterStats(request)
       break;
     case "connected":
       onConnection(request, rinfo);
       break;
     case "get names":
       onGetNames(request, rinfo);
+      break;
+    case "get rank":
+      onGetRank(request, rinfo);
       break;
     default:
       console.log("You did something horribly wrong.");
@@ -76,7 +79,7 @@ function createTables() {
 /**
  * When the server receives a "register stats" command
  */
-function onRegisterStatus(request) {
+function onRegisterStats(request) {
     
     var n = request.name;
     console.log("Will register status of " + n);
@@ -211,6 +214,46 @@ function onGetNames(request, rinfo) {
         var message = new Buffer(str);
         server.send(message, 0, message.length, rinfo.port, rinfo.address, (err)=> {
           if(err) console.log("Error sending message back to spaghettimod");
+        });
+      }
+    });
+}
+
+/**
+ * When the server receives a "get rank" command
+ * request.sender = cn of the user doing the request
+ * request.name = name of the players of which we want the rank
+ */
+function onGetRank(request, rinfo) {
+    var sender = request.sender;
+    var name = request.name;
+    
+    //Search if player's name is already in the db
+    db.all("SELECT * FROM players WHERE name = ? LIMIT 1", name, function(err, rows){
+      if (err) {
+        console.log("ERROR: " + err);
+        return;
+      }
+      if(rows.length == 0){  // not found, do nothing
+        console.log("Name " + name + " not found.");
+      } else { // found, let's return the player's data to Spaghettimod
+        var response = rows[0];
+        
+        //calculate the rank based on the damage 
+        db.all("SELECT * FROM players WHERE damage > ?", rows[0].damage, function(err, rankRows){
+          if (err) {
+            console.log("ERROR: " + err);
+            return;
+          }
+          
+          response.command = "get rank";
+          response.rank = rankRows.length + 1;
+          response.sender = request.sender;
+          var str = JSON.stringify(rows[0])
+          var message = new Buffer(str);
+          server.send(message, 0, message.length, rinfo.port, rinfo.address, (err)=> {
+            if(err) console.log("Error sending message back to spaghettimod");
+          });
         });
       }
     });
