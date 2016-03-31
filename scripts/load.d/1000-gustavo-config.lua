@@ -16,7 +16,7 @@ local fp, L = require"utils.fp", require"utils.lambda"
 local map, I = fp.map, fp.I
 local abuse, playermsg = require"std.abuse", require"std.playermsg"
 
-cs.maxclients = 30    -- with autospec we can afford a generous number here 
+cs.maxclients = 26    -- with autospec we can afford a generous number here 
 cs.serverport = 28785
 spaghetti.later(10000, L'engine.requestmaster("\\n")', true)
 spaghetti.addhook("masterin", L'if _.input:match("^failreg") then engine.lastupdatemaster = 0 end', true)
@@ -246,7 +246,7 @@ spaghetti.addhook("scoreflag", function(info)
   server.sendservmsg("Passes in flagrun (+1 flag point): " .. table.concat(map.li(L"server.colorname(_2, nil)", streak), ", "))
 end)
 
-banner = "\n\n\f7Welcome to \f2Pastaland! \f7A rebrand of spaghettimod kindly brought to you by \f0Gustavo\f7La\f3Pasta\nctf/protect/hold have \f3RUGBY MODE\f7: shoot a teammate to pass the flag you are carrying!\nIf you really have nothing else to do, come visit the forum: \f6www.pastaland.ovh"
+banner = "\n\n\f7Welcome to \f2Pastaland! \f7A rebrand of spaghettimod kindly brought to you by \f0Gustavo\f7La\f3Pasta\nctf/protect/hold have \f3RUGBY MODE\f7: shoot a teammate to pass the flag you are carrying!\nIf you really have nothing else to do, come visit the forum: \f6www.pastaland.ovh""
 spaghetti.addhook("maploaded", function(info)
   if info.ci.extra.bannershown then
     local moddesc = gamemoddesc()
