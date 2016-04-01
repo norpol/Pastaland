@@ -210,7 +210,7 @@ end)
 local function gamemoddesc()
   local msg
   if ents.active() and currentflagswitch then msg = "\n\f1Flag switch mode activated\f7! " .. (server.m_protect and "Your flag spawns in the enemy base!" or "Bring the enemy flag back to the enemy base!") end
-  if server.m_ctf then msg = (msg or "") .. "\n\f3Rugby mode activated\f7! Shoot a teammate to pass the flag you are carrying" end
+  --if server.m_ctf then msg = (msg or "") .. "\n\f3Rugby mode activated\f7! Shoot a teammate to pass the flag you are carrying" end
   return msg
 end
 
@@ -246,7 +246,7 @@ spaghetti.addhook("scoreflag", function(info)
   server.sendservmsg("Passes in flagrun (+1 flag point): " .. table.concat(map.li(L"server.colorname(_2, nil)", streak), ", "))
 end)
 
-banner = "\n\f7Welcome to \f2Pastaland! \f7A rebrand of spaghettimod kindly brought to you by \f0Gustavo\f7La\f3Pasta\nctf/protect/hold have \f3RUGBY MODE\f7: shoot a teammate to pass the flag you are carrying!\n Come visit the forum: \f6www.pastaland.ovh\f7, we have cookies :-)"
+banner = "\n\f7Welcome to \f2Pastaland! \f7A rebrand of spaghettimod kindly brought to you by \f0Gustavo\f7La\f3Pasta\nctf/protect/hold have \f3RUGBY MODE\f7: shoot a teammate to pass the flag you are carrying!\nCome visit the forum: \f6www.pastaland.ovh\f7, we have cookies :-)"
 spaghetti.addhook("maploaded", function(info)
   if info.ci.extra.bannershown then
     local moddesc = gamemoddesc()
