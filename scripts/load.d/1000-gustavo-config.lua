@@ -204,7 +204,7 @@ end, true)
 --simple banner
 
 commands.add("info", function(info)
-  playermsg("Pastaland is a server based on pisto's spaghettimod, brought to you with love by GustavoLapasta", info.ci)
+  playermsg("Pastaland is a server based on pisto's spaghettimod, brought to you with love by GustavoLapasta. Visit www.pastaland.ovh for more info.", info.ci)
 end)
 
 local function gamemoddesc()
@@ -246,7 +246,7 @@ spaghetti.addhook("scoreflag", function(info)
   server.sendservmsg("Passes in flagrun (+1 flag point): " .. table.concat(map.li(L"server.colorname(_2, nil)", streak), ", "))
 end)
 
-banner = "\n\n\f7Welcome to \f2Pastaland! \f7A rebrand of spaghettimod kindly brought to you by \f0Gustavo\f7La\f3Pasta\nctf/protect/hold have \f3RUGBY MODE\f7: shoot a teammate to pass the flag you are carrying!\nIf you really have nothing else to do, come visit the forum: \f6www.pastaland.ovh"
+banner = "\n\f7Welcome to \f2Pastaland! \f7A rebrand of spaghettimod kindly brought to you by \f0Gustavo\f7La\f3Pasta\nctf/protect/hold have \f3RUGBY MODE\f7: shoot a teammate to pass the flag you are carrying!\n Come visit the forum: \f6www.pastaland.ovh\f7, we have cookies :-)"
 spaghetti.addhook("maploaded", function(info)
   if info.ci.extra.bannershown then
     local moddesc = gamemoddesc()
@@ -264,8 +264,4 @@ end)
 
 spaghetti.later(30000, function()
   return server.m_ctf and server.sendservmsg("Remember, it's RUGBY MODE: you \f6shoot a teammate\f7 with \f3rifle\f7 to \f6pass the flag\f7!")
-end, true)
-
-spaghetti.later(1000*60*3, function()
-  return server.m_ctf and server.sendservmsg("Complain, compliment and share pasta recipes on the server forum: \f6www.pastaland.ovh")
 end, true)

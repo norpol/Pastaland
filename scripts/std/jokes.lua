@@ -86,6 +86,17 @@ local funFacts = {
   ,"[\f3PRO-TIP\f7] Badass players use /forceplayermodels 1"
   ,"[\f3PRO-TIP\f7] Badass players use /fullbrightmodels 200"
   ,"[\f3PRO-TIP\f7] Smart players use /showclientnum 1"
+  ,"[\f6INFO\f7] Suggest your nasty jokes on \f6www.pastaland.ovh"
+  ,"[\f6INFO\f7] Complain about sexist jokes on \f6www.pastaland.ovh\f7 and suggest your ones."
+  ,"[\f6INFO\f7] Send your feedback at \f6www.pastaland.ovh\f7 but only if it's good."
+  ,"[\f6INFO\f7] Confirm your celibacy at \f6www.pastaland.ovh"
+  ,"[\f6INFO\f7] Visit us at \f6www.pastaland.ovh\f7, bring your girlfriend too."
+  ,"[\f6INFO\f7] Free porn at \f6www.pastaland.ovh\f7. Just kidding, no porn there. Keep your pants on."
+  ,"[\f6INFO\f7] Complain about your life \f6www.pastaland.ovh\f7. We really care. Sometimes."
+  ,"[\f6INFO\f7] I don't always spam a forum, but when I do, it's on \f6www.pastaland.ovh\f7."
+  ,"[\f6INFO\f7] ... bla bla bla bla bla \f6www.pastaland.ovh\f7 bla bla bla bla bla... "
+  ,"[\f6INFO\f7] Ask for new features at \f6www.pastaland.ovh\f7. We do anything for money. Well, almost anything."
+  ,"[\f6INFO\f7] Come to \f6www.pastaland.ovh\f7. We have cookies!"
 }
 
 local function randomFact()
