@@ -14,7 +14,7 @@ local uuid = require"std.uuid"
 
 local fp, L = require"utils.fp", require"utils.lambda"
 local map, I = fp.map, fp.I
-local abuse, playermsg = require"std.abuse", require"std.playermsg"
+local abuse, playermsg, putf = require"std.abuse", require"std.playermsg", require"std.putf"
 
 cs.maxclients = 26    -- with autospec we can afford a generous number here 
 cs.serverport = 28785
@@ -68,15 +68,16 @@ spaghetti.addhook("changemap", L'require"gamemods.rugby".on(server.m_ctf)')
 
 local commands = require"std.commands"
 local nextflagswitch = false
-commands.add("flagswitch", function(info)
-  local arg = info.args == "" and 1 or tonumber(info.args)
-  if not arg then playermsg("Invalid flagswitch value", info.ci) end
-  local old = nextflagswitch
-  nextflagswitch = arg == 1
-  if old == nextflagswitch then return end
-  if nextflagswitch and (not server.m_ctf or server.m_hold) then playermsg("Mind that you still need to force the next mode to be ctf/protect.", info.ci) end
-  server.sendservmsg(server.colorname(info.ci, nil) .. (nextflagswitch and " activated" or " deactivated") .. " \f1flag switch mode\f7 for the next map (see #help flagswitch).")
-end, "Usage: #flagswitch [0|1]: activate flag switch (blue flag spawns in place of red and viceversa) for the next map if mode is ctf or protect (default 1, only masters)")
+
+--commands.add("flagswitch", function(info)
+--  local arg = info.args == "" and 1 or tonumber(info.args)
+--  if not arg then playermsg("Invalid flagswitch value", info.ci) end
+--  local old = nextflagswitch
+--  nextflagswitch = arg == 1
+--  if old == nextflagswitch then return end
+--  if nextflagswitch and (not server.m_ctf or server.m_hold) then playermsg("Mind that you still need to force the next mode to be ctf/protect.", info.ci) end
+--  server.sendservmsg(server.colorname(info.ci, nil) .. (nextflagswitch and " activated" or " deactivated") .. " \f1flag switch mode\f7 for the next map (see #help flagswitch).")
+--end, "Usage: #flagswitch [0|1]: activate flag switch (blue flag spawns in place of red and viceversa) for the next map if mode is ctf or protect (default 1, only masters)")
 
 local flagswitch, currentflagswitch = require"gamemods.flagswitch", false
 spaghetti.addhook("entsloaded", function()
@@ -97,7 +98,14 @@ commands.add("maxclients", function(info)
   playermsg("Maxclients set to " .. tostring(n), info.ci)
   end, "#maxclients <n>, change the maximum number of allowed clients"
 )
-  
+
+commands.add("skipmap", function(info)
+ if info.ci.privilege < (server.PRIV_MASTER) then playermsg("Insufficient privilege.", info.ci) return end
+ server.gamelimit = server.gamemillis
+ engine.sendpacket(-1, 1, putf({10, r=1}, server.N_TIMEUP, 0):finalize(), -1)
+ server.sendservmsg(server.colorname(info.ci, nil) .. " changes to the next map.")
+ end, "#skipmap, skip the current map."
+)
 
 local ents = require"std.ents", require"std.maploaded"
 
