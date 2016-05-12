@@ -21,6 +21,7 @@ local ctfmaps = table.concat({
   "tortuga turbulence twinforts urban_c valhalla wdcd xenon fc4 fc5 gubo donya duomo"
 }, " ")
 
+
 -- load required libs
 local abuse, playermsg, iterators = require"std.abuse", require"std.playermsg", require"std.iterators"
 local L, fp = require"utils.lambda", require"utils.fp"
