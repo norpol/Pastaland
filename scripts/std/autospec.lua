@@ -35,6 +35,10 @@ end
 
 spaghetti.addhook("changemap",
   function(info)
+    -- reset all players positions at map change
+    for ci in iterators.players() do
+      ci.extra.curPos = vec3()
+    end
     spaghetti.latergame(TIME_BETWEEN_CHECKS, updateClientPosition, true)
   end
 )
