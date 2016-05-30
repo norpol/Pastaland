@@ -8,7 +8,7 @@
 local iterators = require("std.iterators");
 local vec3 = require("utils.vec3");
 
-local TIME_BETWEEN_CHECKS = 1000*30 -- how many milliseconds between each position check
+local TIME_BETWEEN_CHECKS = 1000*35 -- how many milliseconds between each position check
 local DELTA = 0.2 -- if the position difference between checks is lower than this value, put client to spec
 
 -- Called every TIME_BETWEEN_CHECKS milliseconds.
