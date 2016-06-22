@@ -106,6 +106,8 @@ local funFacts = {
   ,"[\f6INFO\f7] ... bla bla bla bla bla \f6www.pastaland.ovh\f7 bla bla bla bla bla... "
   ,"[\f6INFO\f7] Ask for new features at \f6www.pastaland.ovh\f7. We do anything for money. Well, almost anything."
   ,"[\f6INFO\f7] Come to \f6www.pastaland.ovh\f7. We have cookies!"
+  ,"[\f6INFO\f7] If you are a real Sauerbraten aficionado, go visit \f6www.sauerworld.org"
+  ,"[\f6INFO\f7] Go visit \f6www.sauerworld.org to feed your Sauerbraten addiction!"
 }
 
 local function randomFact()
