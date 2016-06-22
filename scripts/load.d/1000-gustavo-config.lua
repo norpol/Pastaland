@@ -61,7 +61,8 @@ ctfmaps = map.uv(function(maps)
 end, ctfmaps)
 
 cs.maprotation("instactf", ctfmaps)
-server.mastermask = server.MM_PUBSERV + server.MM_AUTOAPPROVE
+--server.mastermask = server.MM_PUBSERV + server.MM_AUTOAPPROVE --old setting with open master
+server.mastermask = server.MM_MODE + server.MM_AUTH --you need some authkey now to get master
 
 --gamemods
 spaghetti.addhook("changemap", L'require"gamemods.rugby".on(server.m_ctf)')
