@@ -53,7 +53,7 @@ local function validate_map (map) local rot = get_curmaprotation(); return rot[m
 local function registervote (info)
 	-- if server.mastermode < server.MM_LOCKED then return end 
 	if info.ci.privilege == server.PRIV_ADMIN then return end
-	if info.ci.privilege == server.PRIV_MASTER and server.mastermode == server.MM_VETO then return end
+	if info.ci.privilege >= server.PRIV_MASTER and server.mastermode == server.MM_VETO then return end
 	if info.text ~= server.smapname and server.m_valid(info.reqmode) and validate_map(info.text) then
 		info.ci.extra.mapvote = info.text
 		playermsg("\f7[\f0MAP\f7BAT\f3TLE\f7] Your vote was \f0accepted\f7 into map battle pool!", info.ci)
