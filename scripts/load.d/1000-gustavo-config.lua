@@ -116,7 +116,8 @@ require"std.jokes"    -- jokes module
 require"std.stats"    -- statistics module
 require"std.autospec" -- autospec module
 require"std.db"       -- Pastalandjs module
-require"std.mapbattle_gst"-- mapbattle module 
+require"std.mapbattle_gst"-- mapbattle module
+require"std.rename"   -- rename module
 --require"std.settime"  -- USE ONLY DURING TESTING
 
 spaghetti.addhook("entsloaded", function()
