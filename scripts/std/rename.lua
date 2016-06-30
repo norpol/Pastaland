@@ -46,7 +46,7 @@ local argstable = {}
     ):finalize(),
   -1)
   --messages.error(msg):format(oldname):send(ci)
-  info.ci.name = newname
+  who.name = newname
   
   playermsg(("renamed %d(%s) into %s"):format(cn, oldname, who.name), info.ci)
   engine.writelog(("rename %d(%s) into %s from %s"):format(cn, oldname, who.name, info.ci.name))
