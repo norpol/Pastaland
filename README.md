@@ -7,6 +7,8 @@ This repo contains the Lua modules for the **Pastaland** Sauerbraten server:
 * The *autospec* module, to put non-moving clients to spec
 * The *authloader* module, to load auth keys from an external file and allow adding keys in real time
 * The *db* module, to connect to the Pastalandjs service to save and load players statistics
+* The *mapbattle_gst* module, that provides a slightly modified version of the regular spaghettimod matbattle
+* The *rename* module, to allow auth holders to change other players names
 * The *1000-gustavo-config* file, the actual server configuration.
 
 ###Building
