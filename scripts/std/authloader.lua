@@ -1,8 +1,8 @@
 --[[
   
   This module provides the following functionality:
-  - add the #addkey command, to load auth key directly from the game prompt
-  - add the #load command, lo load the auth keys saved to disk, in case of manual editing of the auth file
+  - add the #keyadd command, to load auth key directly from the game prompt
+  - add the #keysreload command, lo load the auth keys saved to disk, in case of manual editing of the auth file
   - persist the keys in a file named var/<cs.serverauth>.auth in json format. 
   
 ]]--
