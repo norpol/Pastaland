@@ -11,6 +11,7 @@ local servertag = require"utils.servertag"
 servertag.tag = "gustavo"
 
 local uuid = require"std.uuid"
+local iterators = require"std.iterators"
 
 local fp, L = require"utils.fp", require"utils.lambda"
 local map, I = fp.map, fp.I
@@ -224,6 +225,20 @@ local function gamemoddesc()
   --if server.m_ctf then msg = (msg or "") .. "\n\f3Rugby mode activated\f7! Shoot a teammate to pass the flag you are carrying" end
   return msg
 end
+
+local function checkbalance(info)
+  local evilTeam = 0
+  local goodTeam = 0
+  for ci in iterators.all() do
+    if ci.team == "evil" then evilTeam = evilTeam + 1
+    elseif ci.team == "good" then goodTeam = goodTeam + 1
+    end
+  end
+  if info.ci.team == "good" and goodTeam <= evilTeam then info.skip = true
+  elseif info.ci.team == "evil" and evilTeam <= goodTeam then info.skip = true
+  end
+end
+spaghetti.addhook(server.N_SWITCHTEAM, checkbalance)
 
 local passes = {}
 local function resetstreak(info) if not info.i then passes = {} else passes[info.i] = nil end end
