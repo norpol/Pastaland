@@ -230,13 +230,14 @@ local function checkbalance(info)
   local evilTeam = 0
   local goodTeam = 0
   for ci in iterators.all() do
-    if ci.team == "evil" then evilTeam = evilTeam + 1
-    elseif ci.team == "good" then goodTeam = goodTeam + 1
+    if ((ci.team == "evil") and (ci.state.state ~= engine.CS_SPECTATOR)) then evilTeam = evilTeam + 1
+    elseif ((ci.team == "good") and (ci.state.state ~= engine.CS_SPECTATOR)) then goodTeam = goodTeam + 1
     end
   end
   if info.ci.team == "good" and goodTeam <= evilTeam then info.skip = true
   elseif info.ci.team == "evil" and evilTeam <= goodTeam then info.skip = true
   end
+  engine.writelog(("teamswitch from team %s; evil:%d good:%d from %s denied:%s"):format(info.ci.team, evilTeam, goodTeam, info.ci.name, tostring(info.skip)))
 end
 spaghetti.addhook(server.N_SWITCHTEAM, checkbalance)
 
