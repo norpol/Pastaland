@@ -9,6 +9,7 @@ This repo contains the Lua modules for the **Pastaland** Sauerbraten server:
 * The *db* module, to connect to the Pastalandjs service to save and load players statistics
 * The *mapbattle_gst* module, that provides a slightly modified version of the regular spaghettimod matbattle
 * The *rename* module, to allow auth holders to change other players names
+* The *disconnect* module, to free game slots
 * The *1000-gustavo-config* file, the actual server configuration.
 
 ###Building
@@ -16,10 +17,10 @@ This repo contains the Lua modules for the **Pastaland** Sauerbraten server:
 * Build spaghettimod according to Pisto's instructions.
 
 ###Installing the modules
-* Just copy the Pastaland modules respecting the paths shown in this repo: *stats.lua*, *autospec.lua*, *authloader.lua*, *db.lua* and *jokes.lua* go in script/std, *1000-gustavo-config.lua* goes into script/load.d, *gustavo.auth* contains the authkeys for players and goes in the var directory.
+* Just copy or link (ln -s) the Pastaland modules respecting the paths shown in this repo: *stats.lua*, *autospec.lua*, *authloader.lua*, *db.lua*, *disconnect.lua*, *mapbattle_gst.lua*, *rename.lua* and *jokes.lua* go in script/std, *1000-gustavo-config.lua* goes into script/load.d, *gustavo.auth* contains the authkeys for players and goes in the var directory.
 
 ###Running
-* Once copied the modules, there's no need to rebuild. Just move to spaghettimod's root dir and launch *#GST=1 ./sauer_server*
+* Once copied or linked the modules, there's no need to rebuild. Just move to spaghettimod's root dir and launch *#GST=1 ./sauer_server*
 
 ##PastalandJs
 PastalandJs is a service based on NodeJs that communicates via UDP with the Pastaland server. Currently it is just used to save and load player statistics and connection info, persisted in a Sqlite database.
