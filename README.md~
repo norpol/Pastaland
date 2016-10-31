@@ -33,6 +33,7 @@ PastalandJs is a service based on NodeJs that communicates via UDP with the Past
 ###Running PastalandJs
 The easiest way is opening a terminal in *pastalandjs* folder and issue *node index.js*, but the recommended way is by means of a process manager like Pm2: https://github.com/Unitech/pm2
 Since the connection between Pastaland and PastalandJs is via UDP, there is actually no connection. This means that one can run with or without the other, with no problems whatsoever.
+PastalandJs will also run a webserver on port 8082, serving the statistics saved in the database. When running in local mode, you can access the pages from the browser at the address http://localhost:8082/rankbymatches.
 
 ###License
 All the files in this repository are released under the Zlib license
