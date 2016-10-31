@@ -1,0 +1,35 @@
+extends layout
+
+block content
+  p <b>#{title}</b> - #{subtitle}
+  
+  div
+  table
+    tr
+      th Rank
+      th Name
+      th Matches
+      th Frags
+      th Deaths
+      th Flags Scored
+      th Flags Stolen
+      th Teamkills
+      th Passes
+      //th Shots
+      th Accuracy %
+      th KpD
+    each row, index in result
+      tr
+        td #{index+1}
+        td #{row.name}
+        td #{row.matches}
+        td #{row.frags}
+        td #{row.deaths}
+        td #{row.flags}
+        td #{row.stolen}
+        td #{row.tk}
+        td #{row.passes}
+        //td #{row.shots}
+        td #{(row.acc * 100).toFixed(2)}
+        td #{(row.kpd).toFixed(2)}
+        

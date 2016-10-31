@@ -1,0 +1,35 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    h2 The <a href="http://www.pastaland.ovh">Pastaland</a> Ranks
+  body
+  
+    ul
+      li
+        a(href='rankbymatches') Matches
+      li
+        a(href='rankbyfrags') Frags
+      li
+        a(href='rankbydeaths') Deaths
+      li
+        a(href='rankbyflagsscored') Scored
+      li
+        a(href='rankbyflagsstolen') Stolen
+      li
+        a(href='rankbyteamkills') Teamkills
+      li
+        a(href='rankbypasses') Passes
+      //li
+        //a(href='rankbyshots') Shots
+      li
+        a(href='rankbyacc') Accuracy
+      li
+        a(href='rankbykpd') KpD
+      
+  
+    block content
+    
+    p
+      i Disclaimer: This website uses pasta instead of cookies.

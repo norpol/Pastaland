@@ -1,6 +1,11 @@
 
 var sqlite3 = require('sqlite3').verbose();
+var fs = require('fs');
 var db;
+
+var express = require('express')
+var app = express()
+var path = require('path');
 
 var PORT = 41234;
 var HOST = '127.0.0.1';
@@ -23,7 +28,8 @@ server.on('message', (msg, rinfo) => {
   switch (request.command) {
     //case
     case "register stats":
-      onRegisterStats(request)
+      onRegisterStats(request);
+      populateRows();
       break;
     case "connected":
       onConnection(request, rinfo);
@@ -261,3 +267,148 @@ function onGetRank(request, rinfo) {
 
 createDb();
 server.bind(PORT, HOST);
+
+////////////////
+//Express stuff
+///////////////
+
+var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'a'});
+var limit = 500
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+app.use(express.static(path.join(__dirname, 'public')));
+
+var rankByMatchesRows;
+var rankByFragsRows;
+var rankByDeathsRows;
+var rankByFlagsScoredRows;
+var rankByFlagsStolenRows;
+var rankByTeamkillsRows;
+var rankByPassesRows;
+var rankByShotsRows;
+var rankByAccRows;
+var rankByKpdRows;
+
+//Runs at every server access
+var accessLogger = function (req, res, next) {
+  var ip = req.headers['x-forwarded-for'] || 
+     req.connection.remoteAddress || 
+     req.socket.remoteAddress ||
+     req.connection.socket.remoteAddress;
+  
+  var logLine = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '') + " Connection from " + ip + ", url: " + req.url;
+  log_file.write(logLine + '\n');
+  console.log(logLine)
+  
+  if (rankByMatchesRows == null) {
+    console.log('Populating rows');
+    populateRows();
+  }
+  next();
+};
+
+app.use(accessLogger)
+
+populateRows();
+
+function populateRows() {
+  
+    db.all("SELECT *, (frags*1.0 /shots) as acc, (frags*1.0 /deaths) as kpd FROM players ORDER BY matches DESC LIMIT ?", limit, function(err, matchesRows){
+      rankByMatchesRows = matchesRows;
+      db.all("SELECT *, (frags*1.0 /shots) as acc, (frags*1.0 /deaths) as kpd FROM players ORDER BY frags DESC LIMIT ?", limit, function(err, fragsRows){
+        rankByFragsRows = fragsRows;
+        db.all("SELECT *, (frags*1.0 /shots) as acc, (frags*1.0 /deaths) as kpd FROM players ORDER BY deaths DESC LIMIT ?", limit, function(err, deathsRows){
+          rankByDeathsRows = deathsRows;
+          db.all("SELECT *, (frags*1.0 /shots) as acc, (frags*1.0 /deaths) as kpd FROM players ORDER BY flags DESC LIMIT ?", limit, function(err, flagsScoredRows){
+            rankByFlagsScoredRows = flagsScoredRows;
+            db.all("SELECT *, (frags*1.0 /shots) as acc, (frags*1.0 /deaths) as kpd FROM players ORDER BY stolen DESC LIMIT ?", limit, function(err, flagsStolenRows){
+              rankByFlagsStolenRows = flagsStolenRows;
+              db.all("SELECT *, (frags*1.0 /shots) as acc, (frags*1.0 /deaths) as kpd FROM players ORDER BY tk DESC LIMIT ?", limit, function(err, teamkillRows){
+                rankByTeamkillsRows = teamkillRows;
+                db.all("SELECT *, (frags*1.0 /shots) as acc, (frags*1.0 /deaths) as kpd FROM players ORDER BY passes DESC LIMIT ?", limit, function(err, passesRows){
+                  rankByPassesRows = passesRows;
+                  db.all("SELECT *, (frags*1.0 /shots) as acc, (frags*1.0 /deaths) as kpd FROM players ORDER BY shots DESC LIMIT ?", limit, function(err, shotsRows){
+                    rankByShotsRows = shotsRows;
+                    db.all("SELECT *, (frags*1.0 /shots) as acc, (frags*1.0 /deaths) as kpd FROM players WHERE matches>30 ORDER BY acc DESC LIMIT ?", limit, function(err, accRows){
+                      rankByAccRows = accRows;
+                      db.all("SELECT *, (frags*1.0 /shots) as acc, (frags*1.0 /deaths) as kpd FROM players WHERE matches>30 ORDER BY kpd DESC LIMIT ?", limit, function(err, kpdRows){
+                        rankByKpdRows = kpdRows;
+                      })    
+                    })
+                  })    
+                })    
+              })
+            })
+          })    
+        })    
+      })  
+    })
+}
+
+app.get('/', function(req, res){
+  res.send('Hello World');
+})
+
+app.get('/rankbymatches', function(req, res){
+  var title = 'Rank by Matches'
+  var subtitle = "The rank of who played most matches"
+  res.render('index', { title: title, subtitle: subtitle, result:rankByMatchesRows});
+})
+
+app.get('/rankbyfrags', function(req, res){
+  var title = 'Rank by Frags'
+  var subtitle = "The rank of who killed the most opponents"
+  res.render('index', { title: title, subtitle: subtitle, result:rankByFragsRows});
+})
+
+app.get('/rankbydeaths', function(req, res){
+  var title = 'Rank by Deaths'
+  var subtitle = "The rank of who died the most"
+  res.render('index', { title: title, subtitle: subtitle, result:rankByDeathsRows});
+})
+
+app.get('/rankbyflagsscored', function(req, res){
+  var title = 'Rank by Flags Scored'
+  var subtitle = "The rank of who scored the most flags"
+  res.render('index', { title: title, subtitle: subtitle, result:rankByFlagsScoredRows});
+})
+
+app.get('/rankbyflagsstolen', function(req, res){
+  var title = 'Rank by Flags stolen'
+  var subtitle = "The rank of who stole the most flags"
+  res.render('index', { title: title, subtitle: subtitle, result:rankByFlagsStolenRows});
+})
+
+app.get('/rankbyteamkills', function(req, res){
+  var title = 'Rank by TeamKills'
+  var subtitle = "The rank of who killed the most teammates"
+  res.render('index', { title: title, subtitle: subtitle, result:rankByTeamkillsRows});
+})
+
+app.get('/rankbypasses', function(req, res){
+  var title = 'Pastaland - Rank by Passes'
+  var subtitle = "The rank of who did the most flag passes"
+  res.render('index', { title: title, subtitle: subtitle, result:rankByPassesRows});
+})
+
+app.get('/rankbyshots', function(req, res){
+  var title = 'Pastaland - Rank by Shots'
+  var subtitle = "The rank based on how many times a player shoot"
+  res.render('index', { title: title, subtitle: subtitle, result:rankByShotsRows});
+})
+
+app.get('/rankbyacc', function(req, res){
+  var title = 'Pastaland - Rank by Accuracy'
+  var subtitle = "The rank of the most accurate players - you must have played at least 30 matches to appear here."
+  res.render('index', { title: title, subtitle: subtitle, result:rankByAccRows});
+})
+
+app.get('/rankbykpd', function(req, res){
+  var title = 'Pastaland - Rank by KpD'
+  var subtitle = "The rank based on kills per deaths - you must have played at least 30 matches to appear here."
+  res.render('index', { title: title, subtitle: subtitle, result:rankByKpdRows});
+})
+
+app.listen(8082, function(){
+  console.log("Express Rank http server listening on port 8082");
+})
