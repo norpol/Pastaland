@@ -24,10 +24,10 @@ local function bailout (arg) -- arg = { ci = who, ip = "1.2.3.4.", name = "ShagT
 		inmates[bailee] = nil
 		if arg.ci then 
 			server.unspectate(arg.ci) 
-			server.sendservmsg(string.format("[JAIL] Bailed %s out!", arg.ci.name))
+			server.sendservmsg(string.format("\f3[\f7JAIL\f3]\f7 Bailed %s out!", arg.ci.name))
 			engine.writelog(string.format("[JAIL] Bailed %s out!", arg.ci.name))
 		elseif arg.name then
-			server.sendservmsg(string.format("[JAIL] Bailed %s out!", arg.name))
+			server.sendservmsg(string.format("\f3[\f7JAIL\f3]\f7 Bailed %s out!", arg.name))
 			engine.writelog(string.format("[JAIL] Bailed %s out!", arg.name))
 		end
 	end
@@ -46,7 +46,7 @@ local function jail (info)
 	if not inmates[engine.getclientip(cn)] then	
 		inmates[engine.getclientip(cn)] = who.name
 		spec_player(who)
-	    server.sendservmsg(string.format("[JAIL] Jailed %s to spectator!", who.name))
+	    server.sendservmsg(string.format("\f3[\f7JAIL\f3]\f7 Jailed %s to spectator!", who.name))
 	    engine.writelog(string.format("[JAIL] Jailed %s to spectator!", who.name))
 		spaghetti.later(jailtime*60*60*1000, function() bailout{ip = engine.getclientip(who.clientnum), name = who.name} end)
 	else playermsg("[JAIL] Player is already locked up!", info.ci) return end
@@ -67,7 +67,7 @@ commands.add("free", free, "#free <cn>\nFreeing someone from jail is always a go
 -- Captain hooks
 local function checkjailed (info)
 	if inmates[engine.getclientip(info.spectator)] then 
-		playermsg("[JAIL] Nuh uh! You stay right where you are.", info.ci)
+		playermsg("\f3[\f7JAIL\f3]\f7 Nuh uh! You stay right where you are.", info.ci)
 		info.skip = true 
 	end
 end
@@ -76,7 +76,7 @@ spaghetti.addhook(server.N_SPECTATOR, checkjailed)
 local function checkjailed_c (info)
 	if inmates[info.ip] then 
 		spec_player(info.ci)
-		playermsg("[JAIL] Huh, where did you go? You belong in jail!", info.ci)
+		playermsg("\f3[\f7JAIL\f3]\f7 Huh, where did you go? You belong in jail!", info.ci)
 	end
 end
 spaghetti.addhook("clientconnect", checkjailed_c)
