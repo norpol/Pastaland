@@ -11,6 +11,7 @@ This repo contains the Lua modules for the **Pastaland** Sauerbraten server:
 * The *rename* module, to allow auth holders to change other players names
 * The *disconnect* module, to free game slots
 * The *pastanames* module, to rename unnamed players to a delicious variety of pasta.
+* The Jail module, to avoid 'Banned for no reason' topics.
 * The *1000-gustavo-config* file, the actual server configuration.
 
 ###Building
