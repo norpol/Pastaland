@@ -7,7 +7,7 @@
 local commands, playermsg = require"std.commands", require"std.playermsg"
 
 -- current collection of inmates, which is checked at connect and unspec.
--- format: inmates = { ["1.2.3.4"] = "ShagTheThug" }
+-- format: inmates = { ["1.2.3.4"] = "PlayerName" }
 local inmates = {} 
 
 -- set the default jailtime in hours here
