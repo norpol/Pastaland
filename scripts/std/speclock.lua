@@ -47,9 +47,9 @@ local function jail (info)
 	    server.sendservmsg(string.format("\f3[\f7JAIL\f3]\f7 Jailed %s to spectator!", who.name))
 	    engine.writelog(string.format("[JAIL] Jailed %s to spectator!", who.name))
 		spaghetti.later(jailtime*60*60*1000, function() bailout{ip = engine.getclientip(who.clientnum)} end)
-	else playermsg("[JAIL] Player is already locked up!", info.ci) return end
+	else playermsg("\f3[\f7JAIL\f3]\f7 Player is already locked up!", info.ci) return end
 end
-commands.add("jail", jail, "#lock <cn>\nLock the bastard up.")
+commands.add("jail", jail, "#lock <cn>\nForce a player to stay in spectator (reconnect safe).")
 
 local function free (info)
 	if info.ci.privilege < server.PRIV_MASTER then playermsg("Insufficient privileges to use this command.", info.ci) return end
