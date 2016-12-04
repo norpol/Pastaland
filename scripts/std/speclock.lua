@@ -49,7 +49,7 @@ local function jail (info)
 		spaghetti.later(jailtime*60*60*1000, function() bailout{ip = engine.getclientip(who.clientnum)} end)
 	else playermsg("\f3[\f7JAIL\f3]\f7 Player is already locked up!", info.ci) return end
 end
-commands.add("jail", jail, "#lock <cn>\nForce a player to stay in spectator (reconnect safe).")
+commands.add("jail", jail, "#jail <cn>\nForce a player to stay in spectator (reconnect safe).")
 
 local function free (info)
 	if info.ci.privilege < server.PRIV_MASTER then playermsg("Insufficient privileges to use this command.", info.ci) return end
