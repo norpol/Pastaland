@@ -11,7 +11,7 @@ local commands, playermsg = require"std.commands", require"std.playermsg"
 local inmates = {} 
 
 -- set the default jailtime in hours here
-local jailtime = 12
+local jailtime = 1
 
 local function spec_player (ci)
     server.forcespectator(ci)
