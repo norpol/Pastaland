@@ -112,7 +112,7 @@ local funFacts = {
   ,"[\f5FOOD-FOR-THOUGHT\f7] I just love pressing F5. It is so refreshing. (FritzFokker)"
   ,"[\f5FOOD-FOR-THOUGHT\f7] What is the difference between snowmen and snowwomen? Snowballs (FritzFokker)!"
   ,"[\f5FOOD-FOR-THOUGHT\f7] If 4 out of 5 people SUFFER from diarrhea, does that mean that one enjoys it? (FritzFokker)"
-  ,"[\f5FOOD-FOR-THOUGHT\f7] Math illiteracy affects 8 out of every 5 people (Pointblack)"
+  ,"[\f5FOOD-FOR-THOUGHT\f7] Math illiteracy affects 8 out of every 5 people (Pointblank)"
   ,"[\f5FOOD-FOR-THOUGHT\f7] What do Cats eat in the Summer? Micecream (Bourbon)"
   ,"[\f5FOOD-FOR-THOUGHT\f7] The taxi driver quit his job. He was tired of people talking behind his back (FritzFokker)"
   ,"[\f5FOOD-FOR-THOUGHT\f7] What do you call an Øwl who can perform magic? Hoodini! (Øwl)"
